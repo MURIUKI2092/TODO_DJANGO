@@ -7,6 +7,9 @@ from django.contrib.auth.validators import UnicodeUsernameValidator
 from django.contrib.auth.models import (PermissionsMixin,AbstractBaseUser,UserManager)
 from django.utils.translation import gettext_lazy as _
 from django.utils import timezone
+import jwt
+from django.conf import settings
+from datetime import datetime,timedelta
 # Create your models here.
 ##override usermanager class 
 class MyUserManager(UserManager):
@@ -104,4 +107,9 @@ class User(PermissionsMixin,AbstractBaseUser,TrackingModel):
     #This one is for generating a token for each user when user is created
     @property
     def token(self):
-        token =""
+        access_token =jwt.encode({'username':self.username,'email':self.email,'exp':datetime.utcnow()+ timedelta(hours=2)},settings.SECRET_KEY,algorithm='HS256')
+        refresh_token =jwt.encode({'username':self.username,'email':self.email,'exp':datetime.utcnow()+ timedelta(hours =24)},settings.SECRET_KEY,algorithm='HS256')
+        return {
+            "access-token":access_token,
+            "refresh_token":refresh_token
+        }
