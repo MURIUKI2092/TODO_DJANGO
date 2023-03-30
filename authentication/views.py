@@ -14,6 +14,8 @@ class AuthUserApiView(GenericAPIView):
         serializer = RegisterSerializer(user)
         return response.Response({'user':serializer.data})
 class RegisterApiView(GenericAPIView):
+    #to remove or bypass jwt validation
+    authentication_classes =[]
     serializer_class = RegisterSerializer
     def post(self,request):
         serializer = self.serializer_class(data=request.data)
@@ -25,6 +27,7 @@ class RegisterApiView(GenericAPIView):
             return response.Response(serializer.errors,status=status.HTTP_400_BAD_REQUEST)
         
 class LoginApiView(GenericAPIView):
+    authentication_classes =[]
     #import login serializer
     serializer_class = LoginSerializer
     def post(self,request):

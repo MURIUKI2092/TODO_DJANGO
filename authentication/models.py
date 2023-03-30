@@ -107,8 +107,8 @@ class User(PermissionsMixin,AbstractBaseUser,TrackingModel):
     #This one is for generating a token for each user when user is created
     @property
     def token(self):
-        access_token =jwt.encode({'username':self.username,'email':self.email,'exp':datetime.utcnow()+ timedelta(hours=2)},settings.SECRET_KEY,algorithm='HS256')
-        refresh_token =jwt.encode({'username':self.username,'email':self.email,'exp':datetime.utcnow()+ timedelta(hours =24)},settings.SECRET_KEY,algorithm='HS256')
+        access_token =jwt.encode({'username':self.username,'email':self.email,'exp':datetime.utcnow()+ timedelta(hours=24)},settings.SECRET_KEY,algorithm='HS256')
+        refresh_token =jwt.encode({'username':self.username,'email':self.email,'exp':datetime.utcnow()+ timedelta(hours =72)},settings.SECRET_KEY,algorithm='HS256')
         return {
             "access-token":access_token,
             "refresh_token":refresh_token
